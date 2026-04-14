@@ -1,0 +1,2 @@
+We are seeking a candidate with experience in Python, SQL, Git, AWS, machine learning, and data analysis.
+Knowledge of Flask and JavaScript is a plus.

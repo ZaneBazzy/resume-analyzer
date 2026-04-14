@@ -1,0 +1,2 @@
+I am a computer science student with experience in Python, Java, SQL, Git, HTML, and CSS.
+I have built small projects and enjoy data analysis and backend development.

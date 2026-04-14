@@ -13,13 +13,18 @@ def analyze_resume(resume_text, job_description, skill_list):
             else:
                 missing_skills.append(skill)
 
-    if len(matched_skills) + len(missing_skills) > 0:
-        match_score = (len(matched_skills) / (len(matched_skills) + len(missing_skills))) * 100
+    total_skills_found = len(matched_skills) + len(missing_skills)
+
+    if total_skills_found > 0:
+        match_score = (len(matched_skills) / total_skills_found) * 100
     else:
         match_score = 0
-
-
+   
     return matched_skills, missing_skills, match_score
+
+def read_file(filename):
+    with open(filename, "r") as file:
+        return file.read()
 
 skill_list = [
     "python",
@@ -35,14 +40,16 @@ skill_list = [
     "css"
 ]
 
-print("=== Resume Analyzer + Job Match Tool ===")
-resume_text = input("Paste your resume text: ")
-job_description = input("Paste the job description text: ")
+resume_text = read_file("resume.txt")
+job_description = read_file("job_description.txt")
 
 matched, missing, score = analyze_resume(resume_text, job_description, skill_list)
 
-
-print("\nMatched Skills:", matched)
+print("=== Resume Analyzer + Job Match Tool ===")
+print("Matched Skills:", matched)
 print("Missing Skills:", missing)
 print("Match Score:", round(score, 2), "%")
+
+
+
 
