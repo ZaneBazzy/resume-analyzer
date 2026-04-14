@@ -35,20 +35,14 @@ skill_list = [
     "css"
 ]
 
-resume_text = """
-I am a computer science student with experience in Python, Java, SQL, and Git.
-I have also worked with HTML and CSS on small class projects.
-"""
-
-job_description = """
-We are looking for a candidate with experience in Python, SQL, AWS, machine learning,
-Git, and data analysis.
-"""
+print("=== Resume Analyzer + Job Match Tool ===")
+resume_text = input("Paste your resume text: ")
+job_description = input("Paste the job description text: ")
 
 matched, missing, score = analyze_resume(resume_text, job_description, skill_list)
 
 
-print("Matched Skills:", matched)
+print("\nMatched Skills:", matched)
 print("Missing Skills:", missing)
 print("Match Score:", round(score, 2), "%")
 
