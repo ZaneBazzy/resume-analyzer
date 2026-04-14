@@ -25,6 +25,34 @@ def analyze_resume(resume_text, job_description, skill_list):
 def read_file(filename):
     with open(filename, "r") as file:
         return file.read()
+    
+def print_results(matched, missing, score):
+    print("\n=== Resume Analyzer + Job Match Tool ===")
+    print(f"Match Score: {round(score, 2)}%")
+    print(f"Matched Skills: {len(matched)}")
+    print(f"Missing Skills: {len(missing)}")
+
+    print("\nMatched Skills:")
+    if matched:
+        for skill in matched:
+            print(f" - {skill}")
+    else:
+        print(" None")
+    
+    print("\nMissing Skills:")
+    if missing:
+        for skill in missing:
+            print(f" - {skill}")
+    else:
+        print(" None")
+
+    print("\nSuggested Next Steps:")
+    if missing:
+        print("Consider adding these skills to your resume if you have experience with them:")
+        for skill in missing:
+            print(f" - {skill}")
+    else:
+        print("Your resume matches all detected job skills.")
 
 skill_list = [
     "python",
@@ -44,11 +72,9 @@ resume_text = read_file("resume.txt")
 job_description = read_file("job_description.txt")
 
 matched, missing, score = analyze_resume(resume_text, job_description, skill_list)
+print_results(matched, missing, score)
 
-print("=== Resume Analyzer + Job Match Tool ===")
-print("Matched Skills:", matched)
-print("Missing Skills:", missing)
-print("Match Score:", round(score, 2), "%")
+
 
 
 
