@@ -1,3 +1,18 @@
+import os
+from flask import Flask, render_template, request
+from werkzeug.utils import secure_filename
+
+app = Flask(__name__)
+
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = {'txt'}
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 
 def analyze_resume(resume_text, job_description, skill_list):
     resume_text = resume_text.lower()
@@ -22,9 +37,7 @@ def analyze_resume(resume_text, job_description, skill_list):
    
     return matched_skills, missing_skills, match_score
 
-def read_file(filename):
-    with open(filename, "r") as file:
-        return file.read()
+
     
 def print_results(matched, missing, score):
     print("\n=== Resume Analyzer + Job Match Tool ===")
@@ -54,6 +67,7 @@ def print_results(matched, missing, score):
     else:
         print("Your resume matches all detected job skills.")
 
+
 skill_list = [
     "python",
     "java",
@@ -68,14 +82,46 @@ skill_list = [
     "css"
 ]
 
-resume_text = read_file("resume.txt")
-job_description = read_file("job_description.txt")
+@app.route("/")
+def home():
+    return render_template("index.html")
 
-matched, missing, score = analyze_resume(resume_text, job_description, skill_list)
-print_results(matched, missing, score)
+@app.route("/analyze", methods=["POST"])
+def analyze():
+    resume_file = request.files.get("resume_file")
+    job_file = request.files.get("job_file")
 
+    if not resume_file or not job_file:
+        return "Please upload both a resume and a job description file."
+    
+    if resume_file.filename == "" or job_file.filename == "":
+        return "Please select valid files for both resume and job description."
+    
+    if not allowed_file(resume_file.filename) or not allowed_file(job_file.filename):
+        return "Only .txt files are allowed for upload."
+    
+    resume_filename = secure_filename(resume_file.filename)
+    job_filename = secure_filename(job_file.filename)
 
+    resume_path = os.path.join(app.config['UPLOAD_FOLDER'], resume_filename)
+    job_path = os.path.join(app.config['UPLOAD_FOLDER'], job_filename)
 
+    resume_file.save(resume_path)
+    job_file.save(job_path)
 
+    with open(resume_path, 'r', encoding='utf-8') as f:
+        resume_text = f.read()
+
+    with open(job_path, 'r', encoding='utf-8') as f:
+        job_description = f.read()
+    
+
+    matched, missing, score = analyze_resume(resume_text, job_description, skill_list)
+
+    return render_template("results.html", matched=matched, missing=missing, score=round(score, 2))
+
+if __name__ == "__main__":
+    app.run(debug=True)
+    
 
 
