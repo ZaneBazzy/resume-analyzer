@@ -15,28 +15,40 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+# Function to extract skills from text based on a predefined skill list
+def extract_skills(text, skill_list):
+    text = text.lower()
+    found_skills = []
+
+    for skill in skill_list:
+        if skill in text:
+            found_skills.append(skill)
+
+    return list(set(found_skills))
+
+
 # Function to analyze resume against job description and skill list
 def analyze_resume(resume_text, job_description, skill_list):
-    resume_text = resume_text.lower()
-    job_description = job_description.lower()
+    resume_skills = extract_skills(resume_text, skill_list)
+    job_skills = extract_skills(job_description, skill_list)
 
     matched_skills = []
     missing_skills = []
 
-    for skill in skill_list:
-        if skill in job_description:
-            if skill in resume_text:
-                matched_skills.append(skill)
-            else:
-                missing_skills.append(skill)
+    for skill in job_skills:
+        if skill in resume_skills:
+            matched_skills.append(skill)
+        else:
+            missing_skills.append(skill)
 
-    total_skills_found = len(matched_skills) + len(missing_skills)
+    total_skills_found = len(job_skills)
 
     if total_skills_found > 0:
         match_score = (len(matched_skills) / total_skills_found) * 100
     else:
         match_score = 0
-   
+
     return matched_skills, missing_skills, match_score
 
 
