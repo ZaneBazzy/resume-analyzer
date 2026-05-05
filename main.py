@@ -1,19 +1,21 @@
 import os
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
+from pypdf import PdfReader
 
 app = Flask(__name__)
 
 UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'txt'}
+ALLOWED_EXTENSIONS = {'txt', "pdf"}
 
+# Create the upload folder
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# Ensure the file exists and is of an allowed type
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
-
+# Function to analyze resume against job description and skill list
 def analyze_resume(resume_text, job_description, skill_list):
     resume_text = resume_text.lower()
     job_description = job_description.lower()
@@ -38,7 +40,7 @@ def analyze_resume(resume_text, job_description, skill_list):
     return matched_skills, missing_skills, match_score
 
 
-    
+# Function to print results in a user-friendly format   
 def print_results(matched, missing, score):
     print("\n=== Resume Analyzer + Job Match Tool ===")
     print(f"Match Score: {round(score, 2)}%")
@@ -67,6 +69,26 @@ def print_results(matched, missing, score):
     else:
         print("Your resume matches all detected job skills.")
 
+# Function to extract text from uploaded file (txt or pdf)
+def extract_text_from_file(file_path):
+    extension = file_path.rsplit(".", 1)[1].lower()
+
+    if extension == "txt":
+        with open(file_path, "r", encoding="utf-8") as file:
+            return file.read()
+
+    if extension == "pdf":
+        reader = PdfReader(file_path)
+        text = ""
+
+        for page in reader.pages:
+            page_text = page.extract_text()
+            if page_text:
+                text += page_text + "\n"
+
+        return text
+
+    return ""
 
 skill_list = [
     "python",
@@ -82,10 +104,12 @@ skill_list = [
     "css"
 ]
 
+# Flask routes
 @app.route("/")
 def home():
     return render_template("index.html")
 
+# Route to handle file uploads and analysis
 @app.route("/analyze", methods=["POST"])
 def analyze():
     resume_file = request.files.get("resume_file")
@@ -109,17 +133,15 @@ def analyze():
     resume_file.save(resume_path)
     job_file.save(job_path)
 
-    with open(resume_path, 'r', encoding='utf-8') as f:
-        resume_text = f.read()
-
-    with open(job_path, 'r', encoding='utf-8') as f:
-        job_description = f.read()
+    resume_text = extract_text_from_file(resume_path)
+    job_description = extract_text_from_file(job_path)
     
 
     matched, missing, score = analyze_resume(resume_text, job_description, skill_list)
 
     return render_template("results.html", matched=matched, missing=missing, score=round(score, 2))
 
+# Run the Flask app
 if __name__ == "__main__":
     app.run(debug=True)
     
