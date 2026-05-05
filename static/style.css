@@ -1,0 +1,67 @@
+body {
+    background: linear-gradient(135deg, #d5dcf0, #248fd6);
+    min-height: 100vh;
+}
+
+.app-title {
+    color: #0542eb;
+}
+
+.card {
+    border: none;
+    border-radius: 16px;
+}
+
+.card-body {
+    background-color: #ebedf5;
+}
+
+.card-header {
+    border-radius: 16px 16px 0 0 !important;
+}
+
+.list-group-item {
+    background-color: #f0f7ff;
+    border-color: #dbeafe;
+}
+
+p, li, label {
+    color: #24324b;
+}
+
+.btn-primary {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+.result-score {
+    color: #1e3a8a;
+}
+
+.card-header {
+    color: #1e293b !important;
+}
+
+.bg-success,
+.bg-danger {
+    color: white !important;
+}
+
+.btn-outline-primary {
+    color: #1e3a8a;
+    border-color: #1e3a8a;
+    background-color: #ffffff;
+    font-weight: 600;
+}
+
+.btn-outline-primary:hover {
+    color: white;
+    background-color: #1e3a8a;
+    border-color: #1e3a8a;
+}
+

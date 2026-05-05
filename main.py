@@ -108,19 +108,6 @@ def extract_text_from_file(file_path):
 
     return ""
 
-skill_list = [
-    "python",
-    "java",
-    "sql",
-    "git",
-    "aws",
-    "machine learning",
-    "data analysis",
-    "flask",
-    "javascript",
-    "html",
-    "css"
-]
 
 def analyze_with_gemini(resume_text, job_description):
     prompt = f"""
