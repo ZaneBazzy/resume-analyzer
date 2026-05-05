@@ -19,6 +19,15 @@
             </div>
         </div>
 
+        <div class="card shadow-sm mb-4">
+            <div class="card-header fw-semibold">
+                Summary
+            </div>
+            <div class="card-body">
+                <p class="mb-0">{{ summary }}</p>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-6 mb-4">
                 <div class="card shadow-sm h-100">
@@ -56,6 +65,40 @@
                         {% endif %}
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header fw-semibold">
+                Resume Feedback
+            </div>
+            <div class="card-body">
+                {% if feedback %}
+                    <ul class="mb-0">
+                        {% for item in feedback %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted mb-0">No feedback available.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header fw-semibold">
+                Suggested Projects
+            </div>
+            <div class="card-body">
+                {% if projects %}
+                    <ul class="mb-0">
+                        {% for project in projects %}
+                            <li>{{ project }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted mb-0">No project suggestions available.</p>
+                {% endif %}
             </div>
         </div>
 
