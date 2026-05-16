@@ -175,6 +175,11 @@ Through this project I learned:
 
 # Screenshots
 
+<img width="1049" height="582" alt="image" src="https://github.com/user-attachments/assets/124473a6-3114-4f75-9a9e-c98b5ca5dd07" />
+
+<img width="936" height="528" alt="image" src="https://github.com/user-attachments/assets/339e98e0-9c33-4ae5-b2b6-469f928fddcf" />
+
+<img width="1108" height="947" alt="image" src="https://github.com/user-attachments/assets/4916eac9-204a-4638-945c-411e907db4c2" />
 
 ---
 
